@@ -17,27 +17,27 @@ class TransactionCategory {
 // Income Categories
 const incomeCategories = [
   TransactionCategory(
-    name: 'Salary',
+    name: '卖水',
     icon: Icons.payments,
     type: TransactionType.income,
   ),
   TransactionCategory(
-    name: 'Freelance',
+    name: '卖烟',
     icon: Icons.work,
     type: TransactionType.income,
   ),
   TransactionCategory(
-    name: 'Investment',
+    name: '卖零食',
     icon: Icons.trending_up,
     type: TransactionType.income,
   ),
   TransactionCategory(
-    name: 'Gift',
+    name: '卖面包',
     icon: Icons.card_giftcard,
     type: TransactionType.income,
   ),
   TransactionCategory(
-    name: 'Other Income',
+    name: '其他收入',
     icon: Icons.attach_money,
     type: TransactionType.income,
   ),
@@ -46,42 +46,27 @@ const incomeCategories = [
 // Expense Categories
 const expenseCategories = [
   TransactionCategory(
-    name: 'Food & Dining',
+    name: '拿水',
     icon: Icons.restaurant,
     type: TransactionType.expense,
   ),
   TransactionCategory(
-    name: 'Transportation',
+    name: '拿烟',
     icon: Icons.directions_car,
     type: TransactionType.expense,
   ),
   TransactionCategory(
-    name: 'Shopping',
+    name: '拿零食',
     icon: Icons.shopping_bag,
     type: TransactionType.expense,
   ),
   TransactionCategory(
-    name: 'Bills & Utilities',
+    name: '拿面包',
     icon: Icons.receipt_long,
     type: TransactionType.expense,
   ),
   TransactionCategory(
-    name: 'Entertainment',
-    icon: Icons.movie,
-    type: TransactionType.expense,
-  ),
-  TransactionCategory(
-    name: 'Healthcare',
-    icon: Icons.local_hospital,
-    type: TransactionType.expense,
-  ),
-  TransactionCategory(
-    name: 'Education',
-    icon: Icons.school,
-    type: TransactionType.expense,
-  ),
-  TransactionCategory(
-    name: 'Other Expense',
+    name: '其他支出',
     icon: Icons.more_horiz,
     type: TransactionType.expense,
   ),
