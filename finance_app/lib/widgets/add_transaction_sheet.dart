@@ -31,14 +31,14 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
     final amount = double.tryParse(raw.replaceAll(',', ''));
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter a valid amount > 0')),
+        const SnackBar(content: Text('请输入大过0的金额')),
       );
       return;
     }
 
     if (selectedCategory == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a category')),
+        const SnackBar(content: Text('请选择类别')),
       );
       return;
     }
@@ -74,7 +74,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Add Transaction',
+                '添加',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               IconButton(
@@ -86,8 +86,8 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
           const SizedBox(height: 8),
           SegmentedButton<bool>(
             segments: const [
-              ButtonSegment(value: true, label: Text('Income'), icon: Icon(Icons.arrow_downward)),
-              ButtonSegment(value: false, label: Text('Expense'), icon: Icon(Icons.arrow_upward)),
+              ButtonSegment(value: true, label: Text('收入'), icon: Icon(Icons.arrow_downward)),
+              ButtonSegment(value: false, label: Text('支出'), icon: Icon(Icons.arrow_upward)),
             ],
             selected: {isIncome},
             onSelectionChanged: (s) => setState(() {
@@ -100,7 +100,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
             controller: amountController,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             decoration: const InputDecoration(
-              labelText: 'Amount',
+              labelText: '金额',
               prefixText: '\$ ',
               border: OutlineInputBorder(),
             ),
@@ -110,7 +110,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
             key: ValueKey(isIncome),
             initialValue: selectedCategory,
             decoration: const InputDecoration(
-              labelText: 'Category',
+              labelText: '类别',
               border: OutlineInputBorder(),
             ),
             items: (isIncome ? incomeCategories : expenseCategories)
@@ -131,7 +131,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
           TextField(
             controller: noteController,
             decoration: const InputDecoration(
-              labelText: 'Note (optional)',
+              labelText: '注意事项（没有可以不写）',
               border: OutlineInputBorder(),
             ),
             maxLines: 2,
@@ -141,7 +141,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
             width: double.infinity,
             child: FilledButton.icon(
               icon: const Icon(Icons.save),
-              label: const Text('Save'),
+              label: const Text('保存'),
               onPressed: _save,
             ),
           ),

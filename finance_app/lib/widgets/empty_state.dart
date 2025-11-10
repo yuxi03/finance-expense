@@ -14,12 +14,12 @@ class EmptyState extends StatelessWidget {
             Icon(Icons.receipt_long_outlined, size: 48, color: Colors.grey.shade500),
             const SizedBox(height: 12),
             Text(
-              'No transactions for this date',
+              '没有记录',
               style: TextStyle(color: Colors.grey.shade700),
             ),
             const SizedBox(height: 8),
             const Text(
-              'Tap + to add your first transaction.',
+              '点击+记录交易.',
               style: TextStyle(fontSize: 12, color: Colors.grey),
             ),
           ],

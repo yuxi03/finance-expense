@@ -26,7 +26,7 @@ class TransactionList extends StatelessWidget {
           ),
           title: Text(t.category),
           subtitle: Text(
-            t.note ?? (t.isIncome ? 'Income' : 'Expense'),
+            t.note ?? (t.isIncome ? '收入' : '支出'),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

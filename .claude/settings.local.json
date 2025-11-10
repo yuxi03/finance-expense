@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter analyze:*)",
+      "Bash(flutter build:*)",
+      "Bash(flutter clean:*)",
+      "Bash(flutter pub get:*)",
+      "Bash(gradlew --stop)",
+      "Bash(./gradlew:*)",
+      "Bash(if exist \"build\\app\\intermediates\\assets\\debug\\mergeDebugAssets\" rmdir /s /q \"build\\app\\intermediates\\assets\\debug\\mergeDebugAssets\")",
+      "Bash(flutter run:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
