@@ -119,7 +119,7 @@ class FinanceHomePage extends ConsumerWidget {
                     child: Column(
                       children: [
                         const Text(
-                          '今日余额',
+                          '今日收入',
                           style: TextStyle(
                             color: Colors.white70,
                             fontSize: 14,
@@ -169,7 +169,6 @@ class FinanceHomePage extends ConsumerWidget {
             // Date Selector
             Container(
               margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
@@ -181,19 +180,33 @@ class FinanceHomePage extends ConsumerWidget {
                   ),
                 ],
               ),
-              child: Row(
-                children: [
-                  Icon(Icons.event_outlined, color: Colors.grey[600], size: 20),
-                  const SizedBox(width: 12),
-                  Text(
-                    formatDateLong(selectedDate),
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey[800],
+              child: Material(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () => _pickDate(context, ref),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    child: Row(
+                      children: [
+                        Icon(Icons.event_outlined, color: Colors.grey[600], size: 20),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            formatDateLong(selectedDate),
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                        ),
+                        Icon(Icons.arrow_drop_down, color: Colors.grey[600], size: 24),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ),
             // Transactions List Header
