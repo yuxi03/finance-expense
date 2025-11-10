@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:finance_app/models/transaction.dart';
-import 'package:finance_app/services/database_service.dart';
-import 'package:finance_app/utils/format.dart';
+import 'package:finance_app/features/transactions/data/models/transaction.dart';
+import 'package:finance_app/features/transactions/data/services/database_service.dart';
+import 'package:finance_app/core/utils/format.dart';
 
 class TransactionRepository {
   final DatabaseService _dbService;

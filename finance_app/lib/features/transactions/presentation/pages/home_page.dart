@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:finance_app/utils/format.dart';
-import 'package:finance_app/widgets/add_transaction_sheet.dart';
-import 'package:finance_app/widgets/empty_state.dart';
-import 'package:finance_app/widgets/transaction_list.dart';
-import 'package:finance_app/providers/transaction_providers.dart';
+import 'package:finance_app/core/utils/format.dart';
+import 'package:finance_app/features/transactions/presentation/widgets/add_transaction_sheet.dart';
+import 'package:finance_app/shared/widgets/empty_state.dart';
+import 'package:finance_app/features/transactions/presentation/widgets/transaction_list.dart';
+import 'package:finance_app/features/transactions/presentation/providers/transaction_providers.dart';
 
 class FinanceHomePage extends ConsumerWidget {
   const FinanceHomePage({super.key});

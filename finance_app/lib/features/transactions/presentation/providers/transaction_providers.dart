@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:finance_app/services/database_service.dart';
-import 'package:finance_app/repositories/transaction_repository.dart';
-import 'package:finance_app/models/transaction.dart';
+import 'package:finance_app/features/transactions/data/services/database_service.dart';
+import 'package:finance_app/features/transactions/data/repositories/transaction_repository.dart';
+import 'package:finance_app/features/transactions/data/models/transaction.dart';
 
 // Database service provider
 final databaseServiceProvider = Provider<DatabaseService>((ref) {

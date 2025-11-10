@@ -1,42 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:finance_app/models/transaction.dart';
-import 'package:finance_app/models/category.dart';
+import 'package:finance_app/features/transactions/data/models/transaction.dart';
+import 'package:finance_app/features/transactions/data/models/category.dart';
+import 'package:uuid/uuid.dart';
 
-class EditTransactionSheet extends StatefulWidget {
-  final TransactionItem transaction;
+class AddTransactionSheet extends StatefulWidget {
+  final DateTime date;
   final void Function(TransactionItem) onSave;
 
-  const EditTransactionSheet({
-    super.key,
-    required this.transaction,
-    required this.onSave,
-  });
+  const AddTransactionSheet({super.key, required this.date, required this.onSave});
 
   @override
-  State<EditTransactionSheet> createState() => _EditTransactionSheetState();
+  State<AddTransactionSheet> createState() => _AddTransactionSheetState();
 }
 
-class _EditTransactionSheetState extends State<EditTransactionSheet>
-    with SingleTickerProviderStateMixin {
-  late bool isIncome;
-  late TextEditingController amountController;
-  late TextEditingController noteController;
-  late String? selectedCategory;
+class _AddTransactionSheetState extends State<AddTransactionSheet> with SingleTickerProviderStateMixin {
+  bool isIncome = true;
+  final amountController = TextEditingController();
+  final noteController = TextEditingController();
+  String? selectedCategory;
   late AnimationController _animationController;
   late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-    isIncome = widget.transaction.isIncome;
-    amountController = TextEditingController(
-      text: widget.transaction.amount.toString(),
-    );
-    noteController = TextEditingController(
-      text: widget.transaction.note ?? '',
-    );
-    selectedCategory = widget.transaction.category;
-
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
@@ -83,16 +70,17 @@ class _EditTransactionSheetState extends State<EditTransactionSheet>
       return;
     }
 
-    final updatedItem = TransactionItem(
-      id: widget.transaction.id,
-      date: widget.transaction.date,
+    const uuid = Uuid();
+    final item = TransactionItem(
+      id: uuid.v4(),
+      date: DateTime(widget.date.year, widget.date.month, widget.date.day),
       amount: amount,
       isIncome: isIncome,
       category: selectedCategory!,
       note: noteController.text.trim().isEmpty ? null : noteController.text.trim(),
-      time: widget.transaction.time,
+      time: TimeOfDay.now(),
     );
-    widget.onSave(updatedItem);
+    widget.onSave(item);
     Navigator.of(context).pop();
   }
 
@@ -128,7 +116,7 @@ class _EditTransactionSheetState extends State<EditTransactionSheet>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  '编辑交易',
+                  '添加交易',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -322,7 +310,7 @@ class _EditTransactionSheetState extends State<EditTransactionSheet>
                   ),
                 ),
                 child: const Text(
-                  '保存修改',
+                  '保存',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
