@@ -56,6 +56,16 @@ final addTransactionProvider = Provider<Future<void> Function(TransactionItem)>(
   };
 });
 
+// Provider to update a transaction
+final updateTransactionProvider = Provider<Future<void> Function(TransactionItem)>((ref) {
+  return (transaction) async {
+    final repository = ref.read(transactionRepositoryProvider);
+    await repository.updateTransaction(transaction);
+    // Invalidate the transactions list to trigger a refresh
+    ref.invalidate(transactionsForDateProvider);
+  };
+});
+
 // Provider to delete a transaction
 final deleteTransactionProvider = Provider<Future<void> Function(String)>((ref) {
   return (id) async {

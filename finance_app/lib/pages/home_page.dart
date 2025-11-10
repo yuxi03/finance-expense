@@ -17,6 +17,19 @@ class FinanceHomePage extends ConsumerWidget {
       initialDate: selectedDate,
       firstDate: DateTime(now.year - 2),
       lastDate: DateTime(now.year + 2),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: const Color(0xFF6C63FF),
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.black,
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null) {
       ref.read(selectedDateProvider.notifier).state =
@@ -29,6 +42,7 @@ class FinanceHomePage extends ConsumerWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       builder: (ctx) => AddTransactionSheet(
         date: selectedDate,
         onSave: (item) async {
@@ -47,73 +61,229 @@ class FinanceHomePage extends ConsumerWidget {
 
     final incomeStr = formatAmount(summary.income);
     final expenseStr = formatAmount(summary.expense);
+    final balance = summary.income - summary.expense;
+    final balanceStr = formatAmount(balance);
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          tooltip: '选择日期',
-          icon: const Icon(Icons.calendar_month_outlined),
-          onPressed: () => _pickDate(context, ref),
-        ),
-        centerTitle: true,
-        title: Column(
-          mainAxisSize: MainAxisSize.min,
+      backgroundColor: Colors.grey[50],
+      body: SafeArea(
+        child: Column(
           children: [
-            Text(
-              '收入: $incomeStr',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            // Modern Header with Gradient
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    const Color(0xFF6C63FF),
+                    const Color(0xFF5A52D5),
+                  ],
+                ),
+              ),
+              child: Column(
+                children: [
+                  // App Bar
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          '我的钱包',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.calendar_today, color: Colors.white),
+                          onPressed: () => _pickDate(context, ref),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Balance Card
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        const Text(
+                          '今日余额',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          balanceStr,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildSummaryItem(
+                                '收入',
+                                incomeStr,
+                                Icons.arrow_downward,
+                                Colors.green[300]!,
+                              ),
+                            ),
+                            Container(
+                              width: 1,
+                              height: 40,
+                              color: Colors.white.withValues(alpha: 0.3),
+                            ),
+                            Expanded(
+                              child: _buildSummaryItem(
+                                '支出',
+                                expenseStr,
+                                Icons.arrow_upward,
+                                Colors.red[300]!,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-            Text(
-              '支出: $expenseStr',
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            // Date Selector
+            Container(
+              margin: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.event_outlined, color: Colors.grey[600], size: 20),
+                  const SizedBox(width: 12),
+                  Text(
+                    formatDateLong(selectedDate),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Transactions List Header
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              child: Row(
+                children: [
+                  Text(
+                    '交易记录',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Transactions List
+            Expanded(
+              child: transactionsAsync.when(
+                data: (transactions) => transactions.isEmpty
+                    ? const EmptyState()
+                    : TransactionList(items: transactions),
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                error: (error, stack) => Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
+                      const SizedBox(height: 16),
+                      Text(
+                        '出错了',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '$error',
+                        style: TextStyle(color: Colors.grey[600]),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ],
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      '选择日期',
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                    Text(
-                      formatDateLong(selectedDate),
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const Divider(height: 0),
-          Expanded(
-            child: transactionsAsync.when(
-              data: (transactions) => transactions.isEmpty
-                  ? const EmptyState()
-                  : TransactionList(items: transactions),
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stack) => Center(
-                child: Text('Error: $error'),
-              ),
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: '添加交易',
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _openAddSheet(context, ref),
-        child: const Icon(Icons.add),
+        icon: const Icon(Icons.add),
+        label: const Text('添加'),
       ),
     );
   }
-}
 
+  Widget _buildSummaryItem(String label, String amount, IconData icon, Color color) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 16),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          amount,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+}
