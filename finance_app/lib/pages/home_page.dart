@@ -51,7 +51,7 @@ class FinanceHomePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          tooltip: 'Pick date',
+          tooltip: '选择日期',
           icon: const Icon(Icons.calendar_month_outlined),
           onPressed: () => _pickDate(context, ref),
         ),
@@ -60,11 +60,11 @@ class FinanceHomePage extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Income: $incomeStr',
+              '收入: $incomeStr',
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             Text(
-              'Expenses: $expenseStr',
+              '支出: $expenseStr',
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
             ),
           ],
@@ -82,7 +82,7 @@ class FinanceHomePage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Selected Date',
+                      '选择日期',
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
@@ -109,7 +109,7 @@ class FinanceHomePage extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        tooltip: 'Add transaction',
+        tooltip: '添加交易',
         onPressed: () => _openAddSheet(context, ref),
         child: const Icon(Icons.add),
       ),
